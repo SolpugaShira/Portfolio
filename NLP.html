@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP-проект · Этапы разработки</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container nav">
+            <div class="logo">NLP Lab</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#overview">Обзор</a></li>
+                <li><a href="#stages">Этапы</a></li>
+                <li><a href="#demo">Демо</a></li>
+                <li><a href="index.html">Портфолио</a></li>
+            </ul>
+            <div class="burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero-small">
+            <div class="container">
+                <h1>Разработка <span class="gold">NLP-модели</span></h1>
+                <p>Полный цикл создания системы анализа тональности текстов на русском языке<br>от идеи до работающего веб-приложения.</p>
+            </div>
+        </section>
+
+        <!-- Краткий обзор -->
+        <section id="overview">
+            <div class="container">
+                <h2 class="section-title">О проекте</h2>
+                <div class="overview-card">
+                    <p style="color: var(--text-primary); margin-bottom: 1rem;">Проект представляет собой веб-сервис для определения эмоциональной окраски текста (позитив/негатив/нейтрально).</p>
+                    <p style="color: var(--text-secondary);">Основан на дообученной модели ruBERT, обёрнутой в Flask API. Фронтенд выполнен в технологичном стиле с использованием золотых и бордовых акцентов.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Этапы разработки -->
+        <section id="stages">
+            <div class="container">
+                <h2 class="section-title">Этапы разработки</h2>
+                <div class="stages-grid">
+                    <!-- Этап 1 -->
+                    <div class="stage-card fade-in">
+                        <h3>1. Выбор архитектуры</h3>
+                        <div class="stage-photo"><span>Фото 1</span></div>
+                        <p class="stage-description">Анализ современных NLP-моделей. Выбран ruBERT как оптимальный баланс качества и производительности для русского языка. Подготовлен токенизатор.</p>
+                        <a href="#" class="btn-secondary">Подробнее</a>
+                    </div>
+                    <!-- Этап 2 -->
+                    <div class="stage-card fade-in">
+                        <h3>2. Сбор и разметка данных</h3>
+                        <div class="stage-photo"><span>Фото 2</span></div>
+                        <p class="stage-description">Использован датасет RuSentiment (около 30 тыс. размеченных постов). Проведена очистка: удаление шума, приведение к нижнему регистру.</p>
+                        <a href="#" class="btn-secondary">Подробнее</a>
+                    </div>
+                    <!-- Этап 3 -->
+                    <div class="stage-card fade-in">
+                        <h3>3. Обучение модели</h3>
+                        <div class="stage-photo"><span>Фото 3</span></div>
+                        <p class="stage-description">Дообучение ruBERT на 3 эпохи. Метрики: accuracy 0.87, F1 0.85. Сохранение весов и конфига в папку model/.</p>
+                        <a href="#" class="btn-secondary">Подробнее</a>
+                    </div>
+                    <!-- Этап 4 -->
+                    <div class="stage-card fade-in">
+                        <h3>4. Разработка API</h3>
+                        <div class="stage-photo"><span>Фото 4</span></div>
+                        <p class="stage-description">Создан Flask-сервер с эндпоинтом /analyze. Модель загружается при старте, предсказание возвращается в JSON.</p>
+                        <a href="#" class="btn-secondary">Подробнее</a>
+                    </div>
+                    <!-- Этап 5 -->
+                    <div class="stage-card fade-in">
+                        <h3>5. Фронтенд</h3>
+                        <div class="stage-photo"><span>Фото 5</span></div>
+                        <p class="stage-description">Разработана HTML-страница с формой ввода и стилями (чёрный фон, золото, бордовый). Отправка запроса через fetch.</p>
+                        <a href="#" class="btn-secondary">Подробнее</a>
+                    </div>
+                    <!-- Этап 6 -->
+                    <div class="stage-card fade-in">
+                        <h3>6. Интеграция и тестирование</h3>
+                        <div class="stage-photo"><span>Фото 6</span></div>
+                        <p class="stage-description">Объединение фронтенда и бэкенда. Тестирование на различных текстах, обработка ошибок, адаптивный дизайн.</p>
+                        <a href="#" class="btn-secondary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Демо (ссылка на работающее приложение) -->
+        <section id="demo">
+            <div class="container">
+                <h2 class="section-title">Интерактивное демо</h2>
+                <div style="background: var(--bg-card); border-radius: 24px; padding: 2.5rem; border: 1px solid var(--border-color); border-top: 4px solid var(--gold); text-align: center;">
+                    <p style="color: var(--text-primary); font-size: 1.2rem; margin-bottom: 2rem;">Попробуйте модель в действии — введите любой текст на русском.</p>
+                    <a href="http://localhost:5000" target="_blank" class="btn-primary" style="display: inline-block;">Запустить демо (локально)</a>
+                    <p style="color: var(--text-secondary); margin-top: 2rem; font-size: 0.9rem;">* для работы необходимо запустить Flask-сервер на локальной машине</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 · Проект NLP · все материалы являются частью портфолио</p>
+        </div>
+    </footer>
+
+    <!-- Общий скрипт -->
+    <script src="script.js"></script>
+</body>
+</html>

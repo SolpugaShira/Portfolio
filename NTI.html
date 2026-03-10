@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проект 1 · Распознавание объектов (LiDAR + CNN)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container nav">
+            <div class="logo">Архео-CV</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="#overview">О проекте</a></li>
+                <li><a href="#stages">Научные этапы</a></li>
+                <li><a href="#publications">Публикации</a></li>
+                <li><a href="#demo">Демо</a></li>
+            </ul>
+            <div class="burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero-project">
+            <div class="container">
+                <h1>Распознавание <span class="gold">археологических объектов</span></h1>
+                <p>LiDAR + CNN · Участие в конкурсе НТИ «Экспедиция. Data Science»</p>
+            </div>
+        </section>
+
+        <!-- Обзор проекта -->
+        <section id="overview">
+            <div class="container">
+                <h2 class="section-title">О проекте</h2>
+                <div class="overview-card">
+                    <p style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.2rem;">
+                        Разработка системы искусственного интеллекта для обнаружения археологических объектов (курганов, фундаментов, дорог) 
+                        по данным LiDAR и мультиспектральной съёмки. Проект выполняется в рамках технологического конкурса 
+                        <strong>Up Great «Экспедиция. Data Science»</strong> при поддержке НТИ.
+                    </p>
+                    <p style="color: var(--text-secondary);">
+                        Основные вызовы: работа с зашумленными данными, распознавание объектов на глубине до 5 метров, 
+                        высокая точность (требование >90%). В проекте применяются современные архитектуры CNN (U-Net, DeepLabV3+), 
+                        методы аугментации геопространственных данных, а также ансамблирование моделей.
+                    </p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
+                        <span style="background: var(--bg-secondary); padding: 0.3rem 1rem; border-radius: 20px; border-left: 2px solid var(--gold);">LiDAR</span>
+                        <span style="background: var(--bg-secondary); padding: 0.3rem 1rem; border-radius: 20px; border-left: 2px solid var(--gold);">CNN</span>
+                        <span style="background: var(--bg-secondary); padding: 0.3rem 1rem; border-radius: 20px; border-left: 2px solid var(--gold);">Segmentation</span>
+                        <span style="background: var(--bg-secondary); padding: 0.3rem 1rem; border-radius: 20px; border-left: 2px solid var(--gold);">PyTorch</span>
+                        <span style="background: var(--bg-secondary); padding: 0.3rem 1rem; border-radius: 20px; border-left: 2px solid var(--gold);">НТИ</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Научные и инженерные этапы -->
+        <section id="stages">
+            <div class="container">
+                <h2 class="section-title">Научные этапы разработки</h2>
+                <div class="stages-grid">
+                    <!-- 1. Анализ литературы -->
+                    <div class="stage-card fade-in">
+                        <h3>1. Анализ научной литературы</h3>
+                        <div class="stage-photo"><span>Обзор</span></div>
+                        <p class="stage-description">Изучение современных методов археологической разведки с использованием ML. Сравнение подходов на основе LiDAR и мультиспектральных данных. Выделены ключевые архитектуры: U-Net, DeepLab, Mask R-CNN.</p>
+                    </div>
+                    <!-- 2. Сбор и подготовка данных -->
+                    <div class="stage-card fade-in">
+                        <h3>2. Сбор и подготовка данных</h3>
+                        <div class="stage-photo"><span>Датасет</span></div>
+                        <p class="stage-description">Получены открытые наборы LiDAR (USGS, OpenTopography) и данные организаторов конкурса. Произведена привязка, фильтрация шумов, создание масок для объектов.</p>
+                    </div>
+                    <!-- 3. Предобработка и геопривязка -->
+                    <div class="stage-card fade-in">
+                        <h3>3. Геопространственная предобработка</h3>
+                        <div class="stage-photo"><span>GIS</span></div>
+                        <p class="stage-description">Конвертация сырых облаков точек в растры высот (DSM/DTM), вычисление индексов (интенсивность, мультиспектральные каналы). Использование GDAL, PDAL.</p>
+                    </div>
+                    <!-- 4. Разработка архитектуры CNN -->
+                    <div class="stage-card fade-in">
+                        <h3>4. Проектирование нейросетевой архитектуры</h3>
+                        <div class="stage-photo"><span>U-Net</span></div>
+                        <p class="stage-description">Эксперименты с U-Net, LinkNet, DeepLabV3+. Адаптация для многоканальных входных данных (до 8 каналов). Внедрение механизмов внимания (CBAM).</p>
+                    </div>
+                    <!-- 5. Аугментация геоданных -->
+                    <div class="stage-card fade-in">
+                        <h3>5. Аугментация пространственных данных</h3>
+                        <div class="stage-photo"><span>Augment</span></div>
+                        <p class="stage-description">Разработаны методы аугментации, сохраняющие геометрию: случайные повороты, сдвиги, масштабирование, добавление шума к высотам.</p>
+                    </div>
+                    <!-- 6. Обучение и оптимизация гиперпараметров -->
+                    <div class="stage-card fade-in">
+                        <h3>6. Обучение и настройка</h3>
+                        <div class="stage-photo"><span>Train</span></div>
+                        <p class="stage-description">Обучение на GPU-кластере ИТМО. Использование фокальных функций потерь (Focal Tversky) для борьбы с дисбалансом классов. Метрики IoU, F1.</p>
+                    </div>
+                    <!-- 7. Оценка и валидация -->
+                    <div class="stage-card fade-in">
+                        <h3>7. Оценка и кросс-валидация</h3>
+                        <div class="stage-photo"><span>Validation</span></div>
+                        <p class="stage-description">Проведена кросс-валидация по различным географическим регионам. Анализ ошибок на редких классах (погребения, малые объекты).</p>
+                    </div>
+                    <!-- 8. Ансамблирование моделей -->
+                    <div class="stage-card fade-in">
+                        <h3>8. Ансамблирование и бустинг</h3>
+                        <div class="stage-photo"><span>Ensemble</span></div>
+                        <p class="stage-description">Объединение предсказаний нескольких моделей (U-Net + DeepLab) с усреднением и обучением мета-классификатора. Повышение IoU на 5%.</p>
+                    </div>
+                    <!-- 9. Полевые испытания (конкурс) -->
+                    <div class="stage-card fade-in">
+                        <h3>9. Участие в конкурсе НТИ</h3>
+                        <div class="stage-photo"><span>КОЗ №2</span></div>
+                        <p class="stage-description">Участие в Конкурсе отдельных заданий №2 (поиск подповерхностных объектов). Получены предварительные результаты выше baseline.</p>
+                    </div>
+                    <!-- 10. Написание научной статьи -->
+                    <div class="stage-card fade-in">
+                        <h3>10. Подготовка публикации</h3>
+                        <div class="stage-photo"><span>Paper</span></div>
+                        <p class="stage-description">Статья о методах обработки мультиспектральных данных для археологии. Подана на конференцию "Математические методы распознавания образов" (ММРО-2026).</p>
+                    </div>
+                    <!-- 11. Оптимизация для продакшена -->
+                    <div class="stage-card fade-in">
+                        <h3>11. Оптимизация инференса</h3>
+                        <div class="stage-photo"><span>ONNX</span></div>
+                        <p class="stage-description">Конвертация модели в ONNX, оптимизация под CPU/GPU, создание пайплайна для обработки больших растров (tile-based inference).</p>
+                    </div>
+                    <!-- 12. Развертывание и документация -->
+                    <div class="stage-card fade-in">
+                        <h3>12. Развёртывание и документация</h3>
+                        <div class="stage-photo"><span>Deploy</span></div>
+                        <p class="stage-description">Разработан веб-интерфейс для визуализации результатов, подготовлен отчёт для конкурса, выложен код на GitHub.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Демо секция (Публикации и научная деятельность) -->
+        <section id="publications">
+            <div class="container">
+                <h2 class="section-title">Демо- 'Научные результаты'</h2>
+                <div style="background: var(--bg-card); border-radius: 24px; padding: 2rem; border: 1px solid var(--border-color); border-left: 4px solid var(--burgundy);">
+                    <ul style="list-style: none; color: var(--text-secondary);">
+                        <li style="margin-bottom: 1.5rem; padding-left: 1.5rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--gold);">📄</span>
+                            <strong style="color: var(--text-primary);">Андреев М.А.</strong> "Применение свёрточных нейронных сетей для обнаружения археологических объектов по данным LiDAR" // Труды конференции "Информационные технологии в гуманитарных науках", 2026. (принята к публикации)
+                        </li>
+                        <li style="margin-bottom: 1.5rem; padding-left: 1.5rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--gold);">🗂️</span>
+                            <strong style="color: var(--text-primary);">Датасет "Archaeo-LiDAR"</strong> — размеченный набор данных для распознавания курганов и валов. Доступен по запросу.
+                        </li>
+                        <li style="margin-bottom: 0; padding-left: 1.5rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--gold);">🏆</span>
+                            <strong style="color: var(--text-primary);">Диплом финалиста</strong> конкурса «Экспедиция. Data Science» (КОЗ №2, 3-е место в личном зачёте).
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Демо-секция (ссылка на репозиторий/визуализацию) -->
+        <section id="demo">
+            <div class="container">
+                <h2 class="section-title">Попробовать</h2>
+                <div style="background: var(--bg-card); border-radius: 24px; padding: 2.5rem; border: 1px solid var(--border-color); border-top: 4px solid var(--gold); text-align: center;">
+                    <p style="color: var(--text-primary); font-size: 1.2rem; margin-bottom: 2rem;">Исходный код, обученные модели и примеры предсказаний доступны в репозитории.</p>
+                    <a href="https://github.com/solpugashira/archaeo-cv" target="_blank" class="btn-primary">GitHub проекта</a>
+                    <p style="color: var(--text-secondary); margin-top: 2rem; font-size: 0.9rem;">* веб-демо временно недоступно, ведутся работы</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 · Марк Андреев (Solpuga Shira) · Архив проекта "Распознавание объектов"</p>
+        </div>
+    </footer>
+
+    <!-- Общий скрипт -->
+    <script src="script.js"></script>
+</body>
+</html>

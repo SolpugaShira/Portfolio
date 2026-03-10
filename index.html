@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Марк Андреев | Портфолио</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container nav">
+            <div class="logo" style="margin:10px; letter-spacing:-1px;">Марк Андреев</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="#about">Обо мне</a></li>
+                <li><a href="#skills">Навыки</a></li>
+                <li><a href="#projects">Проекты</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+            <div class="burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero секция -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">Привет, я<br> <span class="gold">Марк Андреев</span></h1>
+                <p class="hero-subtitle">Студент ИТМО • Разработчик AI • Исследователь</p>
+                <a href="#contact" class="btn-primary">Связаться</a>
+            </div>
+        </section>
+
+        <!-- Обо мне -->
+        <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title">Обо мне</h2>
+                <div class="about-content">
+                    <img class = "mark">
+                            
+                    <p>Учусь на треке «Искусственный и естественный интеллект» в Университете ИТМО. Увлекаюсь машинным обучением, компьютерным зрением и разработкой масштабируемых систем. Владею Python, Java, C++, а также основами React.</p>
+                    <p>Стремлюсь создавать решения, которые сочетают передовые технологии и эстетику.</p>
+                    <p><strong>Никнейм:</strong> Solpuga Shira</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Навыки (кликабельные) -->
+        <section id="skills" class="skills">
+            <div class="container">
+                <h2 class="section-title">Навыки</h2>
+                <div class="skills-grid" id="skillsGrid"></div>
+            </div>
+        </section>
+
+        <!-- Проекты -->
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">Проекты</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>Система распознавания объектов</h3>
+                        <p>Компьютерное зрение для археологических объектов (LiDAR + CNN). Участие в конкурсе НТИ.</p>
+                        <a href="NTI.html" class="project-link">Подробнее</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>Конвертер валют</h3>
+                        <p>Веб-приложение с курсами Московской биржи. Реализовано на чистом JS.</p>
+                        <a href="converter.html" class="project-link">Перейти</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>Анализ тональности текстов</h3>
+                        <p>NLP модель на базе трансформеров для определения эмоциональной окраски.</p>
+                        <a href="NLP.html" class="project-link">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Контакты -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">Контакты</h2>
+                <div class="contact-content">
+                    <p>Если вы хотите обсудить сотрудничество или просто поболтать — пишите!</p>
+                    <ul class="contact-list">
+                        <li>✉️ Email: <a href="mailto:booka5@mail.ru">booka5@mail.ru</a></li>
+                        <li>📰 Telegram: <a href="https://t.me/Solpuga_Shira">Solpuga Shira</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Марк Андреев (Solpuga Shira). Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Скрипт для навыков -->
+    <script>
+        (function() {
+            const skillsData = [
+                { name: 'Python', details: ['Django', 'FastAPI', 'NumPy', 'Pandas', 'PyTorch', 'TensorFlow', 'Scikit-learn'] },
+                { name: 'Java', details: ['Spring Boot', 'Hibernate', 'Kafka', 'Maven', 'JUnit'] },
+                { name: 'C++', details: ['STL', 'Boost', 'OpenCV', 'CUDA', 'Qt'] },
+                { name: 'PyTorch / TensorFlow', details: ['Нейросети', 'CNN', 'RNN', 'Трансформеры', 'Обучение с подкреплением'] },
+                { name: 'Computer Vision', details: ['OpenCV', 'YOLO', 'Segmentation', 'Object Detection', 'Image Processing'] },
+                { name: 'React', details: ['Hooks', 'Redux', 'Next.js', 'Material-UI', 'React Router'] },
+                { name: 'Docker', details: ['Контейнеризация', 'Docker Compose', 'Kubernetes (основы)', 'CI/CD'] },
+                { name: 'SQL', details: ['PostgreSQL', 'MySQL', 'SQLite', 'Оптимизация запросов', 'ORM'] },
+                { name: 'HTML/CSS', details: ['HTML5', 'CSS3', 'Flexbox', 'CSS Grid', 'Адаптивная верстка', 'Семантическая разметка', 'Доступность (WCAG)'] },
+{ name: 'JavaScript', details: ['DOM', 'События', 'Асинхронность (Promises, Async/Await)', 'Классы', 'Модули', 'Обработка ошибок', 'Структуры данных'] },
+{ name: 'Node.js / Express', details: ['Node.js', 'Express.js', 'REST API', 'Middleware', 'Аутентификация (JWT)', 'Работа с базами данных (Mongoose, Sequelize)', 'WebSockets'] },
+{ name: 'Базы данных', details: ['Проектирование БД', 'Нормализация', 'Транзакции', 'Индексы', 'NoSQL (MongoDB)', 'Redis'] },
+{ name: 'Data Science', details: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Статистический анализ', 'Эконометрика', 'Анализ социальных сетей', 'Планирование экспериментов'] },
+{ name: 'Natural Language Processing', details: ['Токенизация', 'Word2Vec', 'BERT', 'NLTK', 'SpaCy', 'Анализ тональности', 'Машинный перевод'] },
+{ name: 'Когнитивные науки', details: ['Когнитивная психология', 'Психолингвистика', 'Когнитивная нейронаука', 'Моделирование когнитивных процессов', 'Экспериментальные методы'] },
+{ name: 'Инженерия знаний', details: ['Онтологии', 'Семантические сети', 'Экспертные системы', 'Извлечение знаний', 'Логический вывод'] },
+{ name: 'Управление проектами', details: ['Agile (Scrum, Kanban)', 'PMBOK', 'Управление рисками', 'Сценарное мышление', 'Управление изменениями'] },
+{ name: 'Инструменты разработки', details: ['Git (продвинутый)', 'Docker (оркестрация)', 'CI/CD (GitLab CI, GitHub Actions)', 'Linux (администрирование)', 'Kubernetes (основы)'] },
+{ name: 'Дополнительные компетенции', details: ['3D-моделирование', 'Основы ГИС', 'Технологии творчества', 'Публичные выступления', 'Командообразование'] }
+            ];
+
+            const grid = document.getElementById('skillsGrid');
+
+            skillsData.forEach(function(skill) {
+                const wrapper = document.createElement('div');
+                wrapper.style.width = '100%';
+
+                const skillItem = document.createElement('div');
+                skillItem.className = 'skill-item';
+                skillItem.textContent = skill.name;
+
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'skill-details';
+                detailsDiv.style.display = 'none';
+
+                const ul = document.createElement('ul');
+                skill.details.forEach(function(detail) {
+                    const li = document.createElement('li');
+                    li.textContent = detail;
+                    ul.appendChild(li);
+                });
+                detailsDiv.appendChild(ul);
+
+                skillItem.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+                });
+
+                wrapper.appendChild(skillItem);
+                wrapper.appendChild(detailsDiv);
+                grid.appendChild(wrapper);
+            });
+        })();
+    </script>
+    <!-- Общий скрипт -->
+    <script src="script.js"></script>
+</body>
+</html>
