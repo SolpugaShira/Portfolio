@@ -26,7 +26,6 @@
     </header>
 
     <main>
-        <!-- Hero секция -->
         <section class="hero">
             <div class="container">
                 <h1 class="hero-title">Привет, я<br> <span class="gold">Марк Андреев</span></h1>
@@ -35,7 +34,6 @@
             </div>
         </section>
 
-        <!-- Обо мне -->
         <section id="about" class="about">
             <div class="container">
                 <h2 class="section-title">Обо мне</h2>
@@ -49,7 +47,7 @@
             </div>
         </section>
 
-        <!-- Навыки (кликабельные) -->
+
         <section id="skills" class="skills">
             <div class="container">
                 <h2 class="section-title">Навыки</h2>
@@ -57,7 +55,7 @@
             </div>
         </section>
 
-        <!-- Проекты -->
+
         <section id="projects" class="projects">
             <div class="container">
                 <h2 class="section-title">Проекты</h2>
@@ -77,11 +75,16 @@
                         <p>NLP модель на базе трансформеров для определения эмоциональной окраски.</p>
                         <a href="NLP.html" class="project-link">Подробнее</a>
                     </div>
+                    <div class="project-card">
+                        <h3>ML Lab: KNN & KMeans</h3>
+                        <p>Интерактивная лабораторная работа с визуализацией, историей экспериментов и экспортом в PDF.</p>
+                        <a href="ml_lab.html" class="project-link">Перейти</a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Контакты -->
+
         <section id="contact" class="contact">
             <div class="container">
                 <h2 class="section-title">Контакты</h2>
@@ -102,29 +105,29 @@
         </div>
     </footer>
 
-    <!-- Скрипт для навыков -->
+
     <script>
         (function() {
             const skillsData = [
                 { name: 'Python', details: ['Django', 'FastAPI', 'NumPy', 'Pandas', 'PyTorch', 'TensorFlow', 'Scikit-learn'] },
                 { name: 'Java', details: ['Spring Boot', 'Hibernate', 'Kafka', 'Maven', 'JUnit'] },
                 { name: 'C++', details: ['STL', 'Boost', 'OpenCV', 'CUDA', 'Qt'] },
+                { name: 'JavaScript', details: ['DOM', 'События', 'Асинхронность (Promises, Async/Await)', 'Классы', 'Модули', 'Обработка ошибок', 'Структуры данных'] },
                 { name: 'PyTorch / TensorFlow', details: ['Нейросети', 'CNN', 'RNN', 'Трансформеры', 'Обучение с подкреплением'] },
                 { name: 'Computer Vision', details: ['OpenCV', 'YOLO', 'Segmentation', 'Object Detection', 'Image Processing'] },
                 { name: 'React', details: ['Hooks', 'Redux', 'Next.js', 'Material-UI', 'React Router'] },
                 { name: 'Docker', details: ['Контейнеризация', 'Docker Compose', 'Kubernetes (основы)', 'CI/CD'] },
                 { name: 'SQL', details: ['PostgreSQL', 'MySQL', 'SQLite', 'Оптимизация запросов', 'ORM'] },
                 { name: 'HTML/CSS', details: ['HTML5', 'CSS3', 'Flexbox', 'CSS Grid', 'Адаптивная верстка', 'Семантическая разметка', 'Доступность (WCAG)'] },
-{ name: 'JavaScript', details: ['DOM', 'События', 'Асинхронность (Promises, Async/Await)', 'Классы', 'Модули', 'Обработка ошибок', 'Структуры данных'] },
-{ name: 'Node.js / Express', details: ['Node.js', 'Express.js', 'REST API', 'Middleware', 'Аутентификация (JWT)', 'Работа с базами данных (Mongoose, Sequelize)', 'WebSockets'] },
-{ name: 'Базы данных', details: ['Проектирование БД', 'Нормализация', 'Транзакции', 'Индексы', 'NoSQL (MongoDB)', 'Redis'] },
-{ name: 'Data Science', details: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Статистический анализ', 'Эконометрика', 'Анализ социальных сетей', 'Планирование экспериментов'] },
-{ name: 'Natural Language Processing', details: ['Токенизация', 'Word2Vec', 'BERT', 'NLTK', 'SpaCy', 'Анализ тональности', 'Машинный перевод'] },
-{ name: 'Когнитивные науки', details: ['Когнитивная психология', 'Психолингвистика', 'Когнитивная нейронаука', 'Моделирование когнитивных процессов', 'Экспериментальные методы'] },
-{ name: 'Инженерия знаний', details: ['Онтологии', 'Семантические сети', 'Экспертные системы', 'Извлечение знаний', 'Логический вывод'] },
-{ name: 'Управление проектами', details: ['Agile (Scrum, Kanban)', 'PMBOK', 'Управление рисками', 'Сценарное мышление', 'Управление изменениями'] },
-{ name: 'Инструменты разработки', details: ['Git (продвинутый)', 'Docker (оркестрация)', 'CI/CD (GitLab CI, GitHub Actions)', 'Linux (администрирование)', 'Kubernetes (основы)'] },
-{ name: 'Дополнительные компетенции', details: ['3D-моделирование', 'Основы ГИС', 'Технологии творчества', 'Публичные выступления', 'Командообразование'] }
+                { name: 'Node.js / Express', details: ['Node.js', 'Express.js', 'REST API', 'Middleware', 'Аутентификация (JWT)', 'Работа с базами данных (Mongoose, Sequelize)', 'WebSockets'] },
+                { name: 'Базы данных', details: ['Проектирование БД', 'Нормализация', 'Транзакции', 'Индексы', 'NoSQL (MongoDB)', 'Redis'] },
+                { name: 'Data Science', details: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Статистический анализ', 'Эконометрика', 'Анализ социальных сетей', 'Планирование экспериментов'] },
+                { name: 'Natural Language Processing', details: ['Токенизация', 'Word2Vec', 'BERT', 'NLTK', 'SpaCy', 'Анализ тональности', 'Машинный перевод'] },
+                { name: 'Когнитивные науки', details: ['Когнитивная психология', 'Психолингвистика', 'Когнитивная нейронаука', 'Моделирование когнитивных процессов', 'Экспериментальные методы'] },
+                { name: 'Инженерия знаний', details: ['Онтологии', 'Семантические сети', 'Экспертные системы', 'Извлечение знаний', 'Логический вывод'] },
+                { name: 'Управление проектами', details: ['Agile (Scrum, Kanban)', 'PMBOK', 'Управление рисками', 'Сценарное мышление', 'Управление изменениями'] },
+                { name: 'Инструменты разработки', details: ['Git (продвинутый)', 'Docker (оркестрация)', 'CI/CD (GitLab CI, GitHub Actions)', 'Linux (администрирование)', 'Kubernetes (основы)'] },
+                { name: 'Дополнительные компетенции', details: ['3D-моделирование', 'Основы ГИС', 'Технологии творчества', 'Публичные выступления', 'Командообразование'] }
             ];
 
             const grid = document.getElementById('skillsGrid');
