@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Lab: KNN & KMeans | Марк Андреев</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили страницы лаборатории – адаптированы под тёмную тему портфолио */
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .lab-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+        .back-link:hover {
+            color: var(--burgundy);
+            text-shadow: 0 0 8px var(--burgundy-glow);
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+            text-shadow: 0 0 15px var(--gold-glow);
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        .lab-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 900px) {
+            .lab-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--gold);
+            padding-left: 0.75rem;
+            color: var(--gold);
+        }
+        .control-group {
+            margin-bottom: 1.25rem;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        select, input[type="range"] {
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 10px var(--gold-glow);
+        }
+        button {
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            border-radius: 30px;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        button:hover:not(:disabled) {
+            background: var(--gold);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px var(--gold);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-secondary {
+            border-color: var(--burgundy);
+            color: var(--burgundy);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--burgundy);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px var(--burgundy);
+        }
+        .btn-outline {
+            background: transparent;
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .danger-btn {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        .danger-btn:hover:not(:disabled) {
+            background: #ef4444;
+            color: white;
+        }
+        .param-row {
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .range-value {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .plot-image {
+            max-width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+        }
+        .metrics {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--gold);
+            color: var(--text-secondary);
+        }
+        .history-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .history-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .history-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+        .history-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--gold);
+        }
+        .history-meta {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .empty-history {
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 2rem;
+        }
+        .loader {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+        }
+        #datasetStatus {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gold);
+        }
+    </style>
+</head>
+<body>
+<div class="lab-container">
+    <header class="header" style="position: static; background: transparent; backdrop-filter: none; border-bottom: none; padding: 0;">
+        <div class="nav" style="justify-content: flex-start;">
+            <a href="index.html" class="back-link" aria-label="Вернуться в портфолио">← Вернуться в портфолио</a>
+        </div>
+    </header>
+
+    <main>
+        <h1>Лабораторная работа: KNN & KMeans</h1>
+        <div class="subtitle">Интерактивное исследование классификации и кластеризации на наборе Iris</div>
+
+        <div class="lab-grid">
+            <!-- Левая колонка: управление -->
+            <section class="card" aria-labelledby="controls-title">
+                <h2 id="controls-title" class="card-title">1. Данные</h2>
+                <div class="control-group">
+                    <label for="loadIrisBtn">Датасет</label>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button id="loadIrisBtn" class="btn-secondary" aria-label="Загрузить датасет Iris">Загрузить Iris (по умолчанию)</button>
+                        <button id="removeDatasetBtn" class="danger-btn" aria-label="Удалить текущий датасет">Удалить датасет</button>
+                        <button id="uploadOwnBtn" class="btn-outline" aria-label="Загрузить свой датасет (в разработке)">➕ Загрузить свой</button>
+                    </div>
+                    <div id="datasetStatus" aria-live="polite">✅ Датасет Iris загружен</div>
+                </div>
+
+                <h2 class="card-title" style="margin-top: 1rem;">2. Модель</h2>
+                <div class="control-group">
+                    <label for="modelSelect">Выберите модель</label>
+                    <select id="modelSelect">
+                        <option value="knn">K‑ближайших соседей (KNN)</option>
+                        <option value="kmeans">K‑средних (KMeans)</option>
+                    </select>
+                </div>
+
+                <div id="paramsContainer" aria-live="polite">
+                    <!-- параметры будут вставляться динамически -->
+                </div>
+
+                <h2 class="card-title" style="margin-top: 1rem;">3. Признаки для визуализации</h2>
+                <div class="control-group">
+                    <label for="featureX">Признак X (горизонтальная ось)</label>
+                    <select id="featureX">
+                        <option value="0">Длина чашелистика (sepal length)</option>
+                        <option value="1">Ширина чашелистика (sepal width)</option>
+                        <option value="2" selected>Длина лепестка (petal length)</option>
+                        <option value="3">Ширина лепестка (petal width)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="featureY">Признак Y (вертикальная ось)</label>
+                    <select id="featureY">
+                        <option value="0">Длина чашелистика (sepal length)</option>
+                        <option value="1">Ширина чашелистика (sepal width)</option>
+                        <option value="2">Длина лепестка (petal length)</option>
+                        <option value="3" selected>Ширина лепестка (petal width)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <button id="trainBtn" disabled aria-label="Обучить модель и показать график">🚀 Обучить и показать график</button>
+                </div>
+
+                <div id="currentResult" aria-live="polite">
+                    <!-- Здесь будет отображаться график и метрики -->
+                </div>
+            </section>
+
+            <!-- Правая колонка: история -->
+            <section class="card" aria-labelledby="history-title">
+                <h2 id="history-title" class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>История экспериментов</span>
+                    <div>
+                        <button id="clearHistoryBtn" class="btn-secondary" style="font-size: 0.8rem; margin-right: 0.5rem;" aria-label="Очистить всю историю">🗑️ Очистить данные</button>
+                        <button id="exportPdfBtn" class="btn-secondary" style="font-size: 0.8rem;" aria-label="Экспортировать историю в PDF">📄 Сохранить историю в PDF</button>
+                    </div>
+                </h2>
+                <div id="historyList" class="history-list" aria-live="polite">
+                    <div class="empty-history">Нет сохранённых экспериментов.</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        Вычисления выполняются в браузере с помощью Pyodide (Python + scikit-learn + matplotlib)
+    </footer>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "pyodide": "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.mjs"
+        }
+    }
+</script>
+<script type="module">
+    import { loadPyodide } from 'pyodide';
+
+    // --- Глобальные переменные ---
+    let pyodide = null;
+    let isPyodideReady = false;
+    let currentDataset = null;   // { X, y, feature_names, target_names }
+    let history = [];
+
+    // DOM элементы
+    const modelSelect = document.getElementById('modelSelect');
+    const paramsContainer = document.getElementById('paramsContainer');
+    const trainBtn = document.getElementById('trainBtn');
+    const loadIrisBtn = document.getElementById('loadIrisBtn');
+    const removeDatasetBtn = document.getElementById('removeDatasetBtn');
+    const uploadOwnBtn = document.getElementById('uploadOwnBtn');
+    const datasetStatus = document.getElementById('datasetStatus');
+    const currentResultDiv = document.getElementById('currentResult');
+    const historyListDiv = document.getElementById('historyList');
+    const exportPdfBtn = document.getElementById('exportPdfBtn');
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    const featureXSelect = document.getElementById('featureX');
+    const featureYSelect = document.getElementById('featureY');
+
+    // --- Загрузка Pyodide и инициализация ---
+    async function initPyodide() {
+        if (pyodide) return pyodide;
+        datasetStatus.innerHTML = "⏳ Загрузка Pyodide...";
+        pyodide = await loadPyodide();
+        await pyodide.loadPackage(["numpy", "pandas", "matplotlib", "scikit-learn"]);
+        isPyodideReady = true;
+        datasetStatus.innerHTML = "✅ Pyodide готов. Загружаем Iris...";
+        await loadIris();
+    }
+
+    // --- Загрузка Iris через sklearn ---
+    async function loadIris() {
+        if (!isPyodideReady) {
+            await initPyodide();
+        }
+        const code = `
+import numpy as np
+from sklearn import datasets
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+feature_names = iris.feature_names
+target_names = iris.target_names
+__dataset = {'X': X.tolist(), 'y': y.tolist(), 'feature_names': feature_names, 'target_names': target_names}
+        `;
+        await pyodide.runPythonAsync(code);
+        const dataset = pyodide.globals.get('__dataset');
+        currentDataset = {
+            X: dataset.get('X'),
+            y: dataset.get('y'),
+            feature_names: dataset.get('feature_names'),
+            target_names: dataset.get('target_names')
+        };
+        datasetStatus.innerHTML = "✅ Датасет Iris загружен (150 образцов, 4 признака, 3 класса)";
+        trainBtn.disabled = false;
+    }
+
+    function removeDataset() {
+        currentDataset = null;
+        datasetStatus.innerHTML = "⚠️ Датасет удалён. Загрузите Iris или другой датасет.";
+        trainBtn.disabled = true;
+        currentResultDiv.innerHTML = "";
+    }
+
+    function renderParams() {
+        const model = modelSelect.value;
+        if (model === 'knn') {
+            paramsContainer.innerHTML = `
+                <div class="param-row">
+                    <label for="knnK">Количество соседей (k): <span id="knnKValue" class="range-value">5</span></label>
+                    <input type="range" id="knnK" min="1" max="50" step="1" value="5">
+                </div>
+            `;
+            const slider = document.getElementById('knnK');
+            const valueSpan = document.getElementById('knnKValue');
+            slider.addEventListener('input', () => { valueSpan.textContent = slider.value; });
+        } else if (model === 'kmeans') {
+            paramsContainer.innerHTML = `
+                <div class="param-row">
+                    <label for="kmeansN">Количество кластеров: <span id="kmeansNValue" class="range-value">3</span></label>
+                    <input type="range" id="kmeansN" min="2" max="10" step="1" value="3">
+                </div>
+            `;
+            const slider = document.getElementById('kmeansN');
+            const valueSpan = document.getElementById('kmeansNValue');
+            slider.addEventListener('input', () => { valueSpan.textContent = slider.value; });
+        }
+    }
+
+    // --- Обучение и отрисовка ---
+    async function trainAndPlot() {
+        if (!currentDataset) {
+            alert("Сначала загрузите датасет!");
+            return;
+        }
+        if (!isPyodideReady) {
+            await initPyodide();
+        }
+
+        trainBtn.disabled = true;
+        trainBtn.innerHTML = '<span class="loader"></span> Обучение...';
+        currentResultDiv.innerHTML = '<div style="text-align:center; padding:2rem;">Выполняется обучение...</div>';
+
+        const model = modelSelect.value;
+        const idx_x = parseInt(featureXSelect.value);
+        const idx_y = parseInt(featureYSelect.value);
+        const feat_x_name = currentDataset.feature_names[idx_x];
+        const feat_y_name = currentDataset.feature_names[idx_y];
+
+        // Передаём данные в глобальную область Pyodide
+        pyodide.globals.set('X', currentDataset.X);
+        pyodide.globals.set('y', currentDataset.y);
+        pyodide.globals.set('target_names', currentDataset.target_names);
+        pyodide.globals.set('feature_names', currentDataset.feature_names);
+        pyodide.globals.set('idx_x', idx_x);
+        pyodide.globals.set('idx_y', idx_y);
+        pyodide.globals.set('feat_x_name', feat_x_name);
+        pyodide.globals.set('feat_y_name', feat_y_name);
+
+        let pythonCode = "";
+
+        if (model === 'knn') {
+            const k = parseInt(document.getElementById('knnK').value);
+            pyodide.globals.set('k_param', k);
+            pythonCode = `
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+plt.style.use('seaborn-v0_8-whitegrid')
+plt.rcParams['figure.facecolor'] = 'white'
+plt.rcParams['axes.facecolor'] = 'white'
+plt.rcParams['grid.color'] = '#cccccc'
+plt.rcParams['axes.labelcolor'] = 'black'
+plt.rcParams['xtick.color'] = 'black'
+plt.rcParams['ytick.color'] = 'black'
+plt.rcParams['text.color'] = 'black'
+
+X = np.array(X)
+y = np.array(y)
+
+# Выбираем два признака для визуализации
+X_vis = X[:, [idx_x, idx_y]]
+X_train, X_test, y_train, y_test = train_test_split(X_vis, y, test_size=0.33, random_state=42)
+
+knn = KNeighborsClassifier(n_neighbors=k_param)
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+ax1.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap='tab10', edgecolor='k', s=50)
+ax1.set_title("Истинные метки", fontsize=10)
+ax1.set_xlabel(feat_x_name)
+ax1.set_ylabel(feat_y_name)
+
+ax2.scatter(X_test[:, 0], X_test[:, 1], c=y_pred, cmap='tab10', edgecolor='k', s=50)
+ax2.set_title(f"Предсказанные (k={k_param})", fontsize=10)
+ax2.set_xlabel(feat_x_name)
+ax2.set_ylabel(feat_y_name)
+
+fig.suptitle(f"KNN: k={k_param}, Accuracy = {acc:.3f}", fontsize=12)
+
+from io import BytesIO
+buf = BytesIO()
+plt.savefig(buf, format='png', dpi=100, bbox_inches='tight', facecolor='white')
+plt.close()
+image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+__result = {'image': image_base64, 'metrics': {'accuracy': acc}, 'params': {'k': k_param, 'features': [feat_x_name, feat_y_name]}}
+            `;
+        } else if (model === 'kmeans') {
+            const n_clusters = parseInt(document.getElementById('kmeansN').value);
+            pyodide.globals.set('n_clusters_param', n_clusters);
+            pythonCode = `
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+plt.style.use('seaborn-v0_8-whitegrid')
+plt.rcParams['figure.facecolor'] = 'white'
+plt.rcParams['axes.facecolor'] = 'white'
+plt.rcParams['grid.color'] = '#cccccc'
+plt.rcParams['axes.labelcolor'] = 'black'
+plt.rcParams['xtick.color'] = 'black'
+plt.rcParams['ytick.color'] = 'black'
+plt.rcParams['text.color'] = 'black'
+
+X = np.array(X)
+y = np.array(y)
+
+X_vis = X[:, [idx_x, idx_y]]
+
+kmeans = KMeans(n_clusters=n_clusters_param, random_state=42)
+y_pred = kmeans.fit_predict(X_vis)
+
+sil = silhouette_score(X_vis, y_pred) if n_clusters_param > 1 else -1
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+ax1.scatter(X_vis[:, 0], X_vis[:, 1], c=y, cmap='tab10', edgecolor='k', s=50)
+ax1.set_title("Истинные классы", fontsize=10)
+ax1.set_xlabel(feat_x_name)
+ax1.set_ylabel(feat_y_name)
+
+ax2.scatter(X_vis[:, 0], X_vis[:, 1], c=y_pred, cmap='tab10', edgecolor='k', s=50)
+ax2.set_title(f"Предсказанные кластеры (kmeans, n={n_clusters_param})", fontsize=10)
+ax2.set_xlabel(feat_x_name)
+ax2.set_ylabel(feat_y_name)
+
+metric_text = f"KMeans: n_clusters={n_clusters_param}, Silhouette = {sil:.3f}" if n_clusters_param>1 else "KMeans: n_clusters=1"
+fig.suptitle(metric_text, fontsize=12)
+
+from io import BytesIO
+buf = BytesIO()
+plt.savefig(buf, format='png', dpi=100, bbox_inches='tight', facecolor='white')
+plt.close()
+image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+__result = {'image': image_base64, 'metrics': {'silhouette': sil}, 'params': {'n_clusters': n_clusters_param, 'features': [feat_x_name, feat_y_name]}}
+            `;
+        }
+
+        const fullCode = `
+import base64
+${pythonCode}
+        `;
+
+        try {
+            await pyodide.runPythonAsync(fullCode);
+            const result = pyodide.globals.get('__result');
+            if (!result) throw new Error("Результат не получен от Python");
+
+            const imageBase64 = result.get('image');
+            const metrics = result.get('metrics') || {};
+            const paramsUsed = result.get('params') || {};
+
+            let title = "";
+            if (model === 'knn') {
+                const acc = metrics.accuracy;
+                if (acc !== undefined && !isNaN(acc)) {
+                    title = `KNN k=${paramsUsed.k} | accuracy=${acc.toFixed(3)} | признаки: ${paramsUsed.features.join(' vs ')}`;
+                } else {
+                    title = `KNN k=${paramsUsed.k ?? '?'} | accuracy не удалось вычислить | признаки: ${paramsUsed.features?.join(' vs ') ?? '?'}`;
+                }
+            } else {
+                const sil = metrics.silhouette;
+                if (sil !== undefined && !isNaN(sil)) {
+                    title = `KMeans n=${paramsUsed.n_clusters} | silhouette=${sil.toFixed(3)} | признаки: ${paramsUsed.features.join(' vs ')}`;
+                } else {
+                    title = `KMeans n=${paramsUsed.n_clusters ?? '?'} | silhouette не удалось вычислить | признаки: ${paramsUsed.features?.join(' vs ') ?? '?'}`;
+                }
+            }
+
+            const imgHtml = `<img class="plot-image" src="data:image/png;base64,${imageBase64}" alt="График классификации/кластеризации">`;
+            const metricsHtml = `<div class="metrics">${escapeHtml(title)}</div>`;
+            currentResultDiv.innerHTML = imgHtml + metricsHtml + `<button id="saveToHistoryBtn" class="btn-outline" style="margin-top:0.5rem;" aria-label="Сохранить текущий результат в историю">💾 Сохранить в историю</button>`;
+            document.getElementById('saveToHistoryBtn').addEventListener('click', () => {
+                saveToHistory(title, imageBase64, metrics, paramsUsed, model);
+            });
+        } catch (err) {
+            console.error(err);
+            currentResultDiv.innerHTML = `<div style="color:#ef4444;">Ошибка при обучении: ${escapeHtml(err.message)}</div>`;
+        } finally {
+            trainBtn.disabled = false;
+            trainBtn.innerHTML = '🚀 Обучить и показать график';
+        }
+    }
+
+    // --- Сохранение в историю (localStorage) ---
+    function saveToHistory(title, imageBase64, metrics, params, modelType) {
+        const newEntry = {
+            id: Date.now(),
+            title: title,
+            imageBase64: imageBase64,
+            metrics: metrics,
+            params: params,
+            modelType: modelType,
+            timestamp: new Date().toLocaleString()
+        };
+        history.unshift(newEntry);
+        if (history.length > 20) history.pop();
+        localStorage.setItem('mlHistory', JSON.stringify(history));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        if (!history.length) {
+            historyListDiv.innerHTML = '<div class="empty-history">Нет сохранённых экспериментов. Обучите модель и нажмите "Сохранить в историю".</div>';
+            clearHistoryBtn.disabled = true;
+        } else {
+            clearHistoryBtn.disabled = false;
+            let html = '';
+            history.forEach(item => {
+                html += `
+                    <div class="history-item" data-id="${item.id}" role="button" tabindex="0" aria-label="Показать график: ${escapeHtml(item.title)}">
+                        <div class="history-title">${escapeHtml(item.title)}</div>
+                        <div class="history-meta">${escapeHtml(item.timestamp)}</div>
+                    </div>
+                `;
+            });
+            historyListDiv.innerHTML = html;
+            document.querySelectorAll('.history-item').forEach(el => {
+                const clickHandler = () => {
+                    const id = parseInt(el.dataset.id);
+                    const entry = history.find(h => h.id === id);
+                    if (entry) {
+                        currentResultDiv.innerHTML = `
+                            <img class="plot-image" src="data:image/png;base64,${entry.imageBase64}" alt="График классификации/кластеризации">
+                            <div class="metrics">${escapeHtml(entry.title)}</div>
+                            <button id="saveToHistoryBtn" class="btn-outline" style="margin-top:0.5rem;" aria-label="Сохранить этот результат в историю">💾 Сохранить в историю</button>
+                        `;
+                        document.getElementById('saveToHistoryBtn').addEventListener('click', () => {
+                            saveToHistory(entry.title, entry.imageBase64, entry.metrics, entry.params, entry.modelType);
+                        });
+                    }
+                };
+                el.addEventListener('click', clickHandler);
+                el.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        clickHandler();
+                    }
+                });
+            });
+        }
+    }
+
+    function clearHistory() {
+        if (history.length === 0) {
+            alert("История уже пуста.");
+            return;
+        }
+        if (confirm("Вы уверены, что хотите удалить всю сохранённую историю? Это действие нельзя отменить.")) {
+            history = [];
+            localStorage.removeItem('mlHistory');
+            renderHistory();
+            currentResultDiv.innerHTML = '';
+        }
+    }
+
+    function exportToPDF() {
+        if (!history.length) {
+            alert("Нет сохранённой истории для экспорта.");
+            return;
+        }
+        const printWindow = window.open('', '_blank');
+        if (!printWindow) {
+            alert("Пожалуйста, разрешите всплывающие окна для экспорта.");
+            return;
+        }
+
+        const content = `
+            <!DOCTYPE html>
+            <html lang="ru">
+            <head>
+                <meta charset="UTF-8">
+                <title>История экспериментов ML Lab</title>
+                <style>
+                    body {
+                        font-family: 'Inter', 'Segoe UI', sans-serif;
+                        padding: 2rem;
+                        background: white;
+                        color: #000;
+                        line-height: 1.5;
+                    }
+                    h1 {
+                        font-size: 1.8rem;
+                        margin-bottom: 1.5rem;
+                        border-bottom: 2px solid #D4AF37;
+                        display: inline-block;
+                    }
+                    .entry {
+                        margin-bottom: 2rem;
+                        page-break-inside: avoid;
+                        border-bottom: 1px solid #ccc;
+                        padding-bottom: 1rem;
+                    }
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                        border: 1px solid #ddd;
+                        margin-top: 0.5rem;
+                    }
+                    .title {
+                        font-weight: bold;
+                        margin: 0.5rem 0 0.2rem;
+                        font-size: 1.2rem;
+                    }
+                    .timestamp {
+                        color: #666;
+                        font-size: 0.8rem;
+                        margin-bottom: 0.5rem;
+                    }
+                    footer {
+                        margin-top: 2rem;
+                        font-size: 0.8rem;
+                        text-align: center;
+                        color: #666;
+                    }
+                </style>
+            </head>
+            <body>
+                <main>
+                    <h1>История экспериментов</h1>
+                    ${history.map(entry => `
+                        <article class="entry">
+                            <div class="title">${escapeHtml(entry.title)}</div>
+                            <div class="timestamp">${escapeHtml(entry.timestamp)}</div>
+                            <img src="data:image/png;base64,${entry.imageBase64}" alt="График эксперимента: ${escapeHtml(entry.title)}" />
+                        </article>
+                    `).join('')}
+                    <footer>
+                        <p>Сгенерировано ${new Date().toLocaleString()}</p>
+                    </footer>
+                </main>
+            </body>
+            </html>
+        `;
+
+        printWindow.document.write(content);
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    function loadHistoryFromStorage() {
+        const stored = localStorage.getItem('mlHistory');
+        if (stored) {
+            try {
+                history = JSON.parse(stored);
+                renderHistory();
+            } catch(e) { console.warn(e); }
+        } else {
+            renderHistory();
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function bindEvents() {
+        modelSelect.addEventListener('change', () => { renderParams(); });
+        trainBtn.addEventListener('click', trainAndPlot);
+        loadIrisBtn.addEventListener('click', async () => {
+            await loadIris();
+            renderParams();
+        });
+        removeDatasetBtn.addEventListener('click', removeDataset);
+        uploadOwnBtn.addEventListener('click', () => {
+            alert("Загрузка своего датасета находится в разработке.");
+        });
+        exportPdfBtn.addEventListener('click', exportToPDF);
+        clearHistoryBtn.addEventListener('click', clearHistory);
+    }
+
+    async function init() {
+        await initPyodide();
+        bindEvents();
+        renderParams();
+        loadHistoryFromStorage();
+    }
+
+    init().catch(console.error);
+</script>
+</body>
+</html>
